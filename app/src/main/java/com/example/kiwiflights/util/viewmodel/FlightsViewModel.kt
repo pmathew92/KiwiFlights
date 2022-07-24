@@ -1,4 +1,4 @@
-package com.example.kiwiflights.util.view
+package com.example.kiwiflights.util.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

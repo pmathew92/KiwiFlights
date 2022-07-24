@@ -2,7 +2,6 @@ package com.example.kiwiflights.data.network.api
 
 import com.example.kiwiflights.data.model.FlightsEntity
 import retrofit2.http.GET
-import retrofit2.http.Query
 
 interface FlightsApi {
 
