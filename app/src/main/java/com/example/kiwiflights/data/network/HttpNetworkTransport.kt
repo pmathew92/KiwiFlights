@@ -12,7 +12,7 @@ class HttpNetworkTransport(private val okHttpClient: OkHttpClient) {
         return Retrofit.Builder()
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://api.skypicker.com/flights?þ")
+            .baseUrl("https://api.skypicker.com/")
             .build()
     }
 }
