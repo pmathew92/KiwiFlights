@@ -1,4 +1,4 @@
-package com.example.kiwiflights.util.view
+package com.example.kiwiflights.presentation.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

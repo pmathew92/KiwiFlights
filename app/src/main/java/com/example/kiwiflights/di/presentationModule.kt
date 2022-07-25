@@ -1,7 +1,7 @@
 package com.example.kiwiflights.di
 
 import com.example.kiwiflights.domain.usecase.GetInterestingFiveFlightsUseCase
-import com.example.kiwiflights.util.viewmodel.FlightsViewModel
+import com.example.kiwiflights.presentation.viewmodel.FlightsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

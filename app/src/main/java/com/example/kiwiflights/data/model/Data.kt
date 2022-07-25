@@ -32,7 +32,7 @@ data class Data(
     val mapIdto: String,
     val nightsInDest: Any,
     val pnr_count: Int,
-    val popularity: Int,
+    val popularity: Double,
     val price: Int,
     val quality: Double,
     val route: List<Route>,

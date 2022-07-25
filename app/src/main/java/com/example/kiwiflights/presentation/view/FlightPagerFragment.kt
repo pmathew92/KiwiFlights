@@ -1,11 +1,15 @@
-package com.example.kiwiflights.util.view
+package com.example.kiwiflights.presentation.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.kiwiflights.data.model.Data
 import com.example.kiwiflights.databinding.FragmentFlightPagerBinding
+import com.example.kiwiflights.domain.model.Flight
+import com.example.kiwiflights.util.ImageLoader
+import java.text.SimpleDateFormat
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,7 +21,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [FlightPagerFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FlightPagerFragment : Fragment() {
+class FlightPagerFragment(private val flight: Flight) : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -41,6 +45,11 @@ class FlightPagerFragment : Fragment() {
         return viewBinding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpView()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _viewBinding = null
@@ -56,29 +65,26 @@ class FlightPagerFragment : Fragment() {
          * @return A new instance of fragment FlightPagerFragment.
          */
         // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FlightPagerFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+//        @JvmStatic
+//        fun newInstance(param1: String, param2: String) =
+//            FlightPagerFragment().apply {
+//                arguments = Bundle().apply {
+//                    putString(ARG_PARAM1, param1)
+//                    putString(ARG_PARAM2, param2)
+//                }
+//            }
     }
 
     private fun setUpView() {
-//        viewBinding.destinationTextView.text = flight.cityTo
-//        viewBinding.priceTextView.text = flight.price
-//        Picasso.get().load("https://images.kiwi.com/photos/600x330/" + flight.mapIdto + ".jpg")
-//            .fit().centerCrop().into(
-//                imageView
-//            )
-//        val dateFormat = SimpleDateFormat("dd.MM.yyyy. HH:mm")
-//        departureTextView.text = dateFormat.format(flight.dTime)
-//        arivalTextView.text = dateFormat.format(flight.aTime)
-//        durationTextView.text = flight.flyDuration
-//
-//        flight.availability.seats?.let { seatsTextView.text = it.toString() }
-//            ?: kotlin.run { seatsTextView.text = "0" }
+        viewBinding.destinationTextView.text = flight.destination
+        viewBinding.priceTextView.text = flight.price.toString()
+        ImageLoader.displayImage(
+            flight.image,
+            viewBinding.imageView,
+        )
+        viewBinding.departureTextView.text = flight.departureTime
+        viewBinding.arivalTextView.text = flight.arrivalTime
+        viewBinding.durationTextView.text = flight.duration
+        viewBinding.seatsTextView.text = flight.seatsLeft
     }
 }

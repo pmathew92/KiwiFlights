@@ -1,6 +1,6 @@
 package com.example.kiwiflights.data.model
 
-data class FlightsEntity(
+data class FlightsResponseEntity(
     val _results: Int,
     val airlinesList: List<Airlines>,
     val airportsList: List<Airports>,

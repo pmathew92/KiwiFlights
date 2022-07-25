@@ -1,4 +1,4 @@
-package com.example.kiwiflights.util.view
+package com.example.kiwiflights.presentation.view
 
 import android.os.Bundle
 import android.util.Log
@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.kiwiflights.databinding.FragmentFlightsBinding
-import com.example.kiwiflights.util.adapter.FlightPagerAdapter
-import com.example.kiwiflights.util.viewmodel.FlightsViewModel
+import com.example.kiwiflights.presentation.adapter.FlightPagerAdapter
+import com.example.kiwiflights.presentation.viewmodel.FlightUiState
+import com.example.kiwiflights.presentation.viewmodel.FlightsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -36,6 +37,20 @@ class FlightsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
+
+        flightsViewModel.flightUiState.observe(viewLifecycleOwner) {
+            when (it) {
+                is FlightUiState.Success -> {
+                    val fragmentList = mutableListOf<Fragment>()
+                    it.flightList.forEach { it1 ->
+                        fragmentList.add(FlightPagerFragment(it1))
+                    }
+                    flightPagerAdapter.addFragments(fragmentList)
+                }
+                else -> {
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

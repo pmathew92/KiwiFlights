@@ -7,6 +7,7 @@ import com.example.kiwiflights.data.network.HttpNetworkTransport
 import com.example.kiwiflights.data.network.api.FlightsApi
 import com.example.kiwiflights.data.repository.FlightsRepositoryImpl
 import com.example.kiwiflights.domain.repository.FlightsRepository
+import com.example.kiwiflights.domain.util.DispatcherProvider
 import org.koin.dsl.module
 
 /**
@@ -22,6 +23,6 @@ val dataModule = module {
         RemoteFlightsDataSource(get<FlightsApi>())
     }
     single<FlightsRepository> {
-        FlightsRepositoryImpl(get<FlightsDataSource>())
+        FlightsRepositoryImpl(get<FlightsDataSource>(), get<DispatcherProvider>())
     }
 }
