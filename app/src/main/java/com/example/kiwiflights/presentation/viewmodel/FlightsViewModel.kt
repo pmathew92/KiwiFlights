@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kiwiflights.domain.usecase.GetInterestingFiveFlightsUseCase
 import com.example.kiwiflights.domain.util.DispatcherProvider
+import com.example.kiwiflights.domain.util.Result
 import com.example.kiwiflights.presentation.model.FlightUIRepresentation
 import com.example.kiwiflights.presentation.model.toFlightUIRepresentation
 import com.example.kiwiflights.util.DateUtil
@@ -43,12 +44,20 @@ class FlightsViewModel(
     fun fetchTopFlights() {
         _flightUiState.value = FlightUiState.Loading
         viewModelScope.launch(exceptionHandler + dispatcherProvider.ioDispatcher()) {
-            val flightsList = getInterestingFiveFlightsUseCase(
+            val result = getInterestingFiveFlightsUseCase(
                 DateUtil.getDaysDateFromToday(1),
                 DateUtil.getDaysDateFromToday(2)
-            ).map { it.toFlightUIRepresentation() }
+            )
+            val uiState = when (result) {
+                is Result.Success -> {
+                    FlightUiState.Success(result.data.map { it.toFlightUIRepresentation() })
+                }
+                is Result.Failure -> {
+                    FlightUiState.Error(result.throwable?.message)
+                }
+            }
             withContext(dispatcherProvider.mainDispatcher()) {
-                _flightUiState.value = FlightUiState.Success(flightsList)
+                _flightUiState.value = uiState
             }
         }
     }

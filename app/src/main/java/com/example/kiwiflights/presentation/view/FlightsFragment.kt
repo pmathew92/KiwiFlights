@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.example.kiwiflights.R
 import com.example.kiwiflights.databinding.FragmentFlightsBinding
 import com.example.kiwiflights.presentation.adapter.FlightPagerAdapter
 import com.example.kiwiflights.presentation.viewmodel.FlightUiState
@@ -73,9 +74,13 @@ class FlightsFragment : Fragment() {
                 viewBinding.swipeRefresh.isRefreshing = false
                 when (uiState) {
                     is FlightUiState.Success -> {
+
+                        if (uiState.flightList.isEmpty()) {
+                            showError(getString(R.string.no_flights))
+                            return@collect
+                        }
                         viewBinding.viewPagerGroup.visibility = View.VISIBLE
                         viewBinding.tvError.visibility = View.GONE
-
                         val fragmentList = mutableListOf<Fragment>()
                         uiState.flightList.forEach {
                             fragmentList.add(FlightPagerFragment.newInstance(it))
@@ -84,8 +89,7 @@ class FlightsFragment : Fragment() {
                     }
                     is FlightUiState.Error -> {
                         viewBinding.viewPagerGroup.visibility = View.GONE
-                        viewBinding.tvError.visibility = View.VISIBLE
-                        viewBinding.tvError.text = uiState.errorMessage
+                        showError(uiState.errorMessage)
                     }
                     is FlightUiState.Loading -> {
                         viewBinding.swipeRefresh.isRefreshing = true
@@ -96,5 +100,10 @@ class FlightsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showError(errorMessage: String?) {
+        viewBinding.tvError.visibility = View.VISIBLE
+        viewBinding.tvError.text = errorMessage
     }
 }
