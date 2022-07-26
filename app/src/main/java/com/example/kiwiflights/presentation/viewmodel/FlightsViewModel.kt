@@ -1,39 +1,55 @@
 package com.example.kiwiflights.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kiwiflights.domain.model.Flight
 import com.example.kiwiflights.domain.usecase.GetInterestingFiveFlightsUseCase
+import com.example.kiwiflights.domain.util.DispatcherProvider
+import com.example.kiwiflights.presentation.model.FlightUIRepresentation
+import com.example.kiwiflights.presentation.model.toFlightUIRepresentation
+import com.example.kiwiflights.util.DateUtil
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 sealed class FlightUiState {
+    object Idle : FlightUiState()
     object Loading : FlightUiState()
-    data class Success(val flightList: List<Flight>) : FlightUiState()
+    data class Success(val flightList: List<FlightUIRepresentation>) : FlightUiState()
     data class Error(val errorMessage: String?) : FlightUiState()
 }
 
-class FlightsViewModel(private val getInterestingFiveFlightsUseCase: GetInterestingFiveFlightsUseCase) :
-    ViewModel() {
+/**
+ * Viewmodel class for flights
+ */
+class FlightsViewModel(
+    private val getInterestingFiveFlightsUseCase: GetInterestingFiveFlightsUseCase,
+    private val dispatcherProvider: DispatcherProvider
+) : ViewModel() {
 
-    private val _flightUiState = MutableLiveData<FlightUiState>()
+    private val _flightUiState = MutableStateFlow<FlightUiState>(FlightUiState.Idle)
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         _flightUiState.value = FlightUiState.Error(throwable.message)
     }
 
-    val flightUiState: LiveData<FlightUiState> = _flightUiState
+    val flightUiState: StateFlow<FlightUiState> = _flightUiState
 
     init {
         fetchTopFlights()
     }
 
     fun fetchTopFlights() {
-        viewModelScope.launch {
-            val flights = getInterestingFiveFlightsUseCase("", "")
-            _flightUiState.postValue(FlightUiState.Success(flights))
+        _flightUiState.value = FlightUiState.Loading
+        viewModelScope.launch(exceptionHandler + dispatcherProvider.ioDispatcher()) {
+            val flightsList = getInterestingFiveFlightsUseCase(
+                DateUtil.getDaysDateFromToday(1),
+                DateUtil.getDaysDateFromToday(2)
+            ).map { it.toFlightUIRepresentation() }
+            withContext(dispatcherProvider.mainDispatcher()) {
+                _flightUiState.value = FlightUiState.Success(flightsList)
+            }
         }
     }
 }

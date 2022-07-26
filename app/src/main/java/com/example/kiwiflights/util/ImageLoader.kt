@@ -10,7 +10,7 @@ object ImageLoader {
      * @param imageUrl
      * @param imageView
      */
-    fun displayImage(imageUrl: String, imageView: ImageView) {
+    fun displayImage(imageUrl: String?, imageView: ImageView) {
         Picasso.get().load(imageUrl).fit().into(imageView)
     }
 }

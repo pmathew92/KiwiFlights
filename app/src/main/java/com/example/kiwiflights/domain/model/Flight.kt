@@ -4,9 +4,9 @@ data class Flight(
     val destination: String,
     val price: Int,
     val currency: String,
-    val image: String,
-    val departureTime: String,
-    val arrivalTime: String,
+    val imageId: String,
+    val utcDepartureTime: Int,
+    val utcArrivalTime: Int,
     val duration: String,
     val seatsLeft: String
 )

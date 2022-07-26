@@ -1,5 +1,6 @@
 package com.example.kiwiflights.data.dataSource
 
+import android.util.Log
 import com.example.kiwiflights.data.dataSource.contract.FlightsDataSource
 import com.example.kiwiflights.data.model.FlightsResponseEntity
 import com.example.kiwiflights.data.network.api.FlightsApi
@@ -13,6 +14,6 @@ class RemoteFlightsDataSource(private val flightsApi: FlightsApi) : FlightsDataS
         departAfter: String,
         departBefore: String
     ): FlightsResponseEntity {
-        return flightsApi.getFlights()
+        return flightsApi.getFlights(departAfter, departBefore)
     }
 }

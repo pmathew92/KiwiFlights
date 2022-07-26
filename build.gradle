@@ -2,10 +2,10 @@ buildscript {
     ext.gradle_build_version = "7.0.4"
     ext.kotlin_version = "1.6.10"
     ext.koin_version = "3.1.5"
-    ext.coroutine_version = "1.5.0"
+    ext.coroutine_version = "1.6.2"
     ext.retrofit_version = "2.9.0"
-    ext.mockk_version = "1.11.0"
-    ext.junit5_version = "5.7.1"
+    ext.mockk_version = "1.12.3"
+    ext.junit5_version = "5.8.2"
     repositories {
         google()
         mavenCentral()
