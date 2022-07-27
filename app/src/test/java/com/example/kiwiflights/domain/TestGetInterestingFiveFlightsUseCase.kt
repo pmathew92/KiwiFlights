@@ -21,7 +21,7 @@ class TestGetInterestingFiveFlightsUseCase {
     private val flightRepository = mockk<FlightsRepository>()
 
     @BeforeEach
-    fun createVenueUseCase() {
+    fun createGetInterestingFiveFlightsUseCase() {
         getInterestingFiveFlightUseCase = GetInterestingFiveFlightsUseCase(
             flightRepository
         )
