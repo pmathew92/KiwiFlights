@@ -1,6 +1,7 @@
 package com.example.kiwiflights.domain.model
 
 data class Flight(
+    val id: String,
     val destination: String,
     val price: Int,
     val currency: String,

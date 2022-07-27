@@ -6,12 +6,13 @@ import com.example.kiwiflights.domain.model.Flight
 fun FlightsResponseEntity.toFlightList(): List<Flight> {
     return data.map {
         Flight(
+            it.id,
             it.cityTo,
             it.price,
             currency,
             it.mapIdto,
-            it.dTime,
-            it.aTime,
+            it.dTimeUTC,
+            it.aTimeUTC,
             it.fly_duration,
             it.availability.seats.toString()
         )
