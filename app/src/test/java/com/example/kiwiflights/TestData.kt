@@ -2,6 +2,7 @@ package com.example.kiwiflights
 
 import com.example.kiwiflights.data.model.Availability
 import com.example.kiwiflights.data.model.Data
+import com.example.kiwiflights.domain.model.Flight
 
 
 val data1 = Data(
@@ -42,4 +43,19 @@ val data3 = Data(
     "istanbul",
     127
 )
+
+
+val flightList = listOf(data1, data2, data3).map {
+    Flight(
+        it.id,
+        it.cityTo,
+        it.price,
+        "EUR",
+        it.mapIdto,
+        it.dTimeUTC,
+        it.aTimeUTC,
+        it.fly_duration,
+        it.availability.seats.toString()
+    )
+}
 

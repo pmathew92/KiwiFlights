@@ -9,7 +9,6 @@ import com.example.kiwiflights.data2
 import com.example.kiwiflights.data3
 import com.example.kiwiflights.domain.util.Result
 import io.mockk.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.jupiter.api.AfterAll
@@ -17,15 +16,13 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-@ExperimentalCoroutinesApi
 class TestFlightRepositoryImpl {
 
     private lateinit var flightRepositoryImpl: FlightsRepositoryImpl
 
     private val dataSourceMock = mockk<FlightsDataSource>()
     private val testDispatcherProvider = TestDispatcherProvider()
-
-    val flightResponseMock = mockk<FlightsResponseEntity>()
+    private val flightResponseMock = mockk<FlightsResponseEntity>()
 
     @BeforeAll
     fun setUp() {
@@ -34,7 +31,7 @@ class TestFlightRepositoryImpl {
     }
 
     @BeforeEach
-    fun createRestaurantRepository() {
+    fun createFlightsRepository() {
         coEvery {
             dataSourceMock.getFlights(
                 any(),
@@ -54,7 +51,7 @@ class TestFlightRepositoryImpl {
     }
 
     @Test
-    fun `verify invoking flight repository getFlights inturn invokes data source getFlights api `() {
+    fun `verify invoking flight repository getFlights in-turn invokes data source getFlights api `() {
         runBlocking {
             val response = flightRepositoryImpl.getFlights("28/07/2022", "29/07/2022")
             coVerify { dataSourceMock.getFlights(any(), any()) }
